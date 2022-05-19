@@ -1,0 +1,255 @@
+<html>
+
+<head>
+	<title>GeoTools WGS84/OSGB36 Converter for Javascript</title>
+	<script language="javascript" src="geotools.js"></script>
+
+	<style type="text/css">
+		div.code {
+			border: 3px dotted silver;
+			padding: 10px;
+			background-color: #ffffee;
+			margin-left: 30px;
+			margin-right: 30px;
+
+		}
+
+		span.comment {
+			color: #008800;
+		}
+
+		div.alert {
+			border: 3px solid red;
+			padding: 20px;
+			margin: 10px;
+			color: #880000;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="alert">
+		This documentation is not yet completed! Please give any feedback on the
+		documentation and classes to paul [at sign] elphin [dot-com]
+	</div>
+
+	<h1>GeoTools WGS84/OSGB36 Converter for Javascript</h1>
+	<h2>See also <a href="GeoTools2.html">Version 2 with WGS84/Irish Converter</a></h2>
+
+	<h2>Introduction</h2>
+
+	<p>GeoTools is a set of javascript classes for performing conversions between
+		WGS84 latitude and longitude coordinates, and Ordnance Survey Great Britain grid
+		references. It has similar performance to the conversion carried out by a typical GPS receiver,
+		and is accurate to approximately 7m for 90% of Great Britain</p>
+
+	<p>The classes are particularly useful for developing "GreaseMonkey" scripts which
+		bolt additional functionality onto existing sites through Javascript</p>
+
+	<h2>History</h2>
+	<ul>
+		<li>10th July 2005 : first release, a conversion of php code used at www.geograph.co.uk</li>
+	</ul>
+
+	<h2>Quick Start</h2>
+	<p>If you're the type that doesn't read manuals, here's how to get up and running</p>
+
+	<h3>Include the script</h3>
+	<div class="code">
+		<pre>
+&lt;script language="javascript" src="geotools.js"&gt;&lt;/script&gt;
+</pre>
+	</div>
+
+	<p>NOTE: If you're developing a GreaseMonkey script, copy the entire geotools.js into your
+		script.</p>
+
+	<h3>Convert WGS84 to OSGB</h3>
+
+	<div class="code">
+		<pre><span class="comment">//create a wgs84 coordinate</span>
+wgs84=new GT_WGS84();
+wgs84.setDegrees(51.59762, -2.39794);
+
+<span class="comment">//convert to OSGB</span>
+osgb=wgs84.getOSGB();
+
+<span class="comment">//get a grid reference with 3 digits of precision</span>
+gridref = osgb.getGridRef(3);</pre>
+	</div>
+
+
+	<h3>Parse a WGS84 Coordinate </h3>
+
+	<div class="code">
+		<pre><span class="comment">//create a wgs84 coordinate</span>
+wgs84=new GT_WGS84();
+
+var str="N 51� 53.947 W 000� 10.018";
+var ok = wgs84.parseString(str);
+if (ok)
+{
+	<span class="comment">//coordinate parse ok, now we can work with it</span>
+	osgb=wgs84.getOSGB();
+}
+</pre>
+	</div>
+
+
+	<h3>Convert OSGB to WGS84</h3>
+
+	<div class="code">
+		<pre><span class="comment">//create a osgb coordinate</span>
+osgb=new GT_OSGB();
+osgb.setGridCoordinates(526217, 223873);
+
+<span class="comment">//convert to a wgs84 coordinate</span>
+wgs84 = osgb.getWGS84();
+
+<span class="comment">//now work with wgs84.latitude and wgs84.longitude</span>
+alert("Latitude "+ wgs84.latitude + " Longitude "+wgs84.longitude);
+
+</pre>
+	</div>
+
+
+
+
+
+	<h2>Demonstration</h2>
+
+	<p>Here's a live demonstration of conversion between WGS84 and OSGB Grid....</p>
+
+	<p>WGS84 Decimal latitude <input type="text" id="lat" value="51.59762" size="16">
+		and longitude <input type="text" id="long" value="-2.39794" size="16">
+		<input type="button" value="Convert" onClick="onConvertDecimal()">
+	</p>
+
+
+	<p>OSGB Grid Ref <input type="text" id="gridref" value="ST 72533 88828" size="16">
+		<input type="button" value="Convert" onClick="onConvertGridRef()">
+	</p>
+
+
+	<script langauge="javascript">
+
+		function onConvertDecimal() {
+			var latitude = parseFloat(document.getElementById('lat').value);
+			var longitude = parseFloat(document.getElementById('long').value);
+
+			var wgs84 = new GT_WGS84();
+			wgs84.setDegrees(latitude, longitude);
+
+			if (wgs84.isGreatBritain()) {
+				var osgb = wgs84.getOSGB();
+				var gridref = osgb.getGridRef(5);
+
+				document.getElementById('gridref').value = gridref;
+			}
+			else {
+				document.getElementById('gridref').value = "outside GB";
+			}
+
+		}
+
+		function onConvertGridRef() {
+			var gr = document.getElementById('gridref').value;
+
+			var osgb = new GT_OSGB();
+
+
+			if (osgb.parseGridRef(gr)) {
+				var wgs84 = osgb.getWGS84();
+
+				document.getElementById('lat').value = wgs84.latitude;
+				document.getElementById('long').value = wgs84.longitude;
+			}
+			else {
+				document.getElementById('lat').value = "n/a";
+				document.getElementById('long').value = "n/a";
+			}
+
+		}
+
+		/*
+		//ST 72533 88828
+		x=new GT_WGS84();
+		
+		//N 51� 53.947 W 000� 10.018
+		//x.latitude=51.59762;
+		//x.longitude=-2.39794;
+		x.setDegreesMinutes(51, 53.947, 000,-10.018)
+		
+		osgb=x.getOSGB();
+		
+		document.write("latitude: "+x.latitude+"<br>");
+		document.write("longitude: "+x.longitude+"<br>");
+		
+		
+		document.write("Status: "+osgb.status+"<br>");
+		document.write("Eastings: "+osgb.eastings+"<br>");
+		document.write("Northings: "+osgb.northings+"<br>");
+		document.write("Grid ref: "+osgb.getGridRef(5)+"<br>");
+		
+		wgs84=osgb.getWGS84();
+		document.write("latitude: "+wgs84.latitude+"<br>");
+		document.write("longitude: "+wgs84.longitude+"<br>");
+		
+		document.write("<hr>");
+		
+		var str="N 51� 53.947 W 000� 10.018";
+		var ok = wgs84.parseString(str);
+		if (ok)
+		{
+			document.write(str+" parsed!<br>");
+			document.write("latitude: "+wgs84.latitude+"<br>");
+			document.write("longitude: "+wgs84.longitude+"<br>");
+		
+			osgb=wgs84.getOSGB();
+			document.write("Grid ref: "+osgb.getGridRef(5)+"<br>");
+		
+		}
+		else
+		{
+			document.write("Couldn't parse "+str);
+		}
+		*/
+
+
+	</script>
+
+
+
+	<h2>Reference Guide</h2>
+
+	<h3>GT_WGS84 Class</h3>
+	<p>This class holds a WGS84 latitude and longitude and includes the following members</p>
+	<ul>
+		<li>latitude - latitude in decimal degrees</li>
+		<li>longitude - longitude in decimal degrees</li>
+		<li>GT_WGS84() constructor</li>
+		<li>setDegrees(latitude,longitude) - set coordinate using decimal degrees</li>
+		<li>parseString(str) - parse a coordinate like N 51� 53.947 W 000� 10.018</li>
+		<li>isGreatBritain() - checks if coordinate is within the OSGB grid</li>
+		<li>isIreland() - checks if coordinate is within the Irish grid</li>
+		<li>getOSGB() - return a GT_OSGB object corresponding to coordinate</li>
+
+
+	</ul>
+
+
+	<h2>Licence</h2>
+	<p>This software is licenced under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public
+			Licence</a>, yadda yadda</p>
+
+
+
+
+
+
+
+</body>
+
+</html>
