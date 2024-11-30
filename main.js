@@ -1,60 +1,46 @@
-// Sorry, this is old code, never replicate or use this code in production.
-// You should never use JQuery, this is just a simple conversion tool for WGS84 to OSGB and vice versa.
-jQuery((function () {
-    $("#convertRunner").on("click", (() => {
-        let n;
-        let a;
-        let converted;
-        if ("" !== $("#wgs84Inp").val()) n = new GT_WGS84, converted = convert($("#wgs84Inp").val()), n.setDegrees(converted.decimalLatitude, converted.decimalLongitude), a = n.getOSGB(), $("#osgbInp").val(a.getGridRef(4)); else if ("" !== $("#osgbInp").val()) {
-            let e = $("#osgbInp").val();
-            a = new GT_OSGB;
-            if (a.parseGridRef(e)) {
-                n = a.getWGS84();
-                $("#wgs84Inp").val(`${n.latitude}, ${n.longitude}`)
-            } else $("#wgs84Inp").val("NaN, NaN")
+document.addEventListener("DOMContentLoaded", function () {
+    const wgs84InputElement = document.getElementById("wgs84Inp");
+    const osgbInputElement = document.getElementById("osgbInp");
+
+    function convertCoordinates() {
+        const wgs84Value = wgs84InputElement.value.trim();
+        const osgbValue = osgbInputElement.value.trim();
+        let wgs84Instance, osgbInstance, convertedCoordinates;
+
+        if (wgs84Value) {
+            wgs84Instance = new GT_WGS84();
+            convertedCoordinates = convert(wgs84Value);
+            wgs84Instance.setDegrees(convertedCoordinates.decimalLatitude, convertedCoordinates.decimalLongitude);
+            osgbInstance = wgs84Instance.getOSGB();
+            osgbInputElement.value = osgbInstance.getGridRef(4);
+        } else if (osgbValue) {
+            osgbInstance = new GT_OSGB();
+            if (osgbInstance.parseGridRef(osgbValue)) {
+                wgs84Instance = osgbInstance.getWGS84();
+                wgs84InputElement.value = `${wgs84Instance.latitude}, ${wgs84Instance.longitude}`;
+            } else {
+                wgs84InputElement.value = "NaN, NaN";
+            }
         }
-    })), $("#wgs84Copy").on("click", (() => {
-        navigator.clipboard.writeText($("#wgs84Inp").val()).then(_ => {
-            console.log("WGS84 copied to clipboard")
-        }).catch(e => {
-            console.error("Failed to copy WGS84 to clipboard: ", e)
-        })
-    })), $("#osgbCopy").on("click", (() => {
-        navigator.clipboard.writeText($("#osgbInp").val()).then(_ => {
-            console.log("OSGB copied to clipboard")
-        }).catch(e => {
-            console.error("Failed to copy OSGB to clipboard: ", e)
-        })
-    })), $("#wgs84Paste").on("click", (() => {
-        navigator.clipboard.readText().then((e => {
-            $("#wgs84Inp").val(e)
-        })).catch((e => {
-            console.error("Failed to read clipboard contents: ", e)
-        }))
-    })), $("#osgbPaste").on("click", (() => {
-        if (navigator.clipboard && window.isSecureContext) {
-            // Modern Clipboard API
-            navigator.clipboard.readText().then((text) => {
-                $("#osgbInp").val(text);
-            }).catch((err) => {
-                console.error('Could not read from clipboard: ', err);
-            });
-        } else if (document.queryCommandSupported('paste')) {
-            // Fallback for older browsers
-            const pasteTarget = document.createElement('textarea');
-            pasteTarget.style.opacity = '0';
-            document.body.appendChild(pasteTarget);
-            pasteTarget.focus();
-            document.execCommand('paste');
-            const pastedText = pasteTarget.value;
-            document.body.removeChild(pasteTarget);
-            $("#osgbInp").val(pastedText);
-        } else {
-            console.error('Clipboard operations not supported by this browser');
-        }
-    })), $("#wgs84Clear").on("click", (() => {
-        $("#wgs84Inp").val("")
-    })), $("#osgbClear").on("click", (() => {
-        $("#osgbInp").val("")
-    }))
-}));
+    }
+
+    function copyToClipboard(inputElement) {
+        navigator.clipboard.writeText(inputElement.value)
+            .then(() => console.log(`${inputElement.id} copied to clipboard`))
+            .catch(error => console.error(`Failed to copy ${inputElement.id} to clipboard: `, error));
+    }
+
+    function pasteFromClipboard(inputElement) {
+        navigator.clipboard.readText()
+            .then(text => inputElement.value = text)
+            .catch(error => console.error("Failed to read clipboard contents: ", error));
+    }
+
+    document.getElementById("convertRunner").addEventListener("click", convertCoordinates);
+    document.getElementById("wgs84Copy").addEventListener("click", () => copyToClipboard(wgs84InputElement));
+    document.getElementById("osgbCopy").addEventListener("click", () => copyToClipboard(osgbInputElement));
+    document.getElementById("wgs84Paste").addEventListener("click", () => pasteFromClipboard(wgs84InputElement));
+    document.getElementById("osgbPaste").addEventListener("click", () => pasteFromClipboard(osgbInputElement));
+    document.getElementById("wgs84Clear").addEventListener("click", () => wgs84InputElement.value = "");
+    document.getElementById("osgbClear").addEventListener("click", () => osgbInputElement.value = "");
+});
