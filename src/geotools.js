@@ -9,28 +9,28 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
+ *
 
- * --------------------------------------------------------------------------- 
- * 
+ * ---------------------------------------------------------------------------
+ *
  * Credits
 
  *
 
- * The algorithm used by the script for WGS84-OSGB36 conversions is derived 
+ * The algorithm used by the script for WGS84-OSGB36 conversions is derived
 
  * from an OSGB spreadsheet (www.gps.gov.uk) with permission. This has been
  * adapted into Perl by Ian Harris, and into PHP by Barry Hunter. Conversion
- * accuracy is in the order of 7m for 90% of Great Britain, and should be 
+ * accuracy is in the order of 7m for 90% of Great Britain, and should be
  * be similar to the conversion made by a typical GPSr
  *
 
@@ -51,7 +51,7 @@
 *
 *****************************************************************************/
 
-function GT_OSGB() {
+export function GT_OSGB() {
 	this.northings = 0;
 	this.eastings = 0;
 	this.status = "Undefined";
@@ -139,7 +139,7 @@ GT_OSGB.prototype.parseGridRef = function (landranger) {
 			var gridEast = 0;
 			var gridNorth = 0;
 
-			//5x1 4x10 3x100 2x1000 1x10000 
+			//5x1 4x10 3x100 2x1000 1x10000
 			if (precision > 0) {
 				var mult = Math.pow(10, 5 - precision);
 				gridEast = parseInt(gridRef[2], 10) * mult;
@@ -196,7 +196,7 @@ GT_OSGB.prototype.getWGS84 = function () {
 *
 *****************************************************************************/
 
-function GT_WGS84() {
+export function GT_WGS84() {
 	this.latitude = 0;
 	this.longitude = 0;
 }
@@ -513,7 +513,7 @@ GT_Math.Helmert_Z = function (X, Y, Z, DZ, X_Rot, Y_Rot, s) {
 	// Input: - _
 	//    cartesian XYZ coords (X,Y,Z), Z translation (DZ) all in meters ; _
 	// X and Y rotations in seconds of arc (X_Rot, Y_Rot) and scale in ppm (s).
-	// 
+	//
 	// Convert rotations to radians and ppm scale to a factor
 	var Pi = 3.14159265358979;
 	var sfactor = s * 0.000001;
