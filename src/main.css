@@ -1,1 +1,87 @@
-@font-face{font-family:'Roboto';font-style:normal;font-weight:400;font-display:swap;src:url(roboto.ttf) format('truetype')}html{font-family:'Roboto',sans-serif;}body{margin:auto;width:max-content;}button{background-color:rgba(255,255,255,0);border:none;color:Black;padding:0;text-align:center;text-decoration:none;display:inline-block;font-size:16px;}img{height:2rem;width:2rem;}input{height:2rem;width:30ch;font-family:inherit;}.inpContainer{display:flex;}#convertDiv{margin:auto;margin-top:2rem;width:fit-content;}#convertRunner{background-color:#000000;border:none;color:white;padding:1rem 1.5rem;text-align:center;text-decoration:none;display:inline-block;font-size:1rem;font-weight:800;border-radius:.5rem;}
+:root {
+    --bg-color: #ddd;
+    --text-color: #333;
+    --border-color: #222;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+}
+
+img {
+    height: 2rem;
+    width: 2rem;
+}
+
+label, input{
+    display: block;
+    margin: 1rem auto auto;
+}
+
+input {
+    height: 2rem;
+    width: 30ch;
+    font-family: inherit;
+    background: inherit;
+    color: inherit;
+    border: var(--border-color) solid 1px;
+    border-radius: 0.5rem;
+    outline: none;
+    padding: 0.5rem;
+}
+
+.inpContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#convertDiv {
+    margin: 2rem auto auto;
+    width: fit-content;
+}
+
+#convertRunner{
+    font-size: 1.3rem;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+button {
+    padding: 1rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 800;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin: 1rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: var(--border-color) solid 1px;
+    outline: none;
+}
+
+#errorDiv{
+    margin: 2rem auto auto;
+    width: 75vw;
+    background-color: rgba(255, 0, 0, 0.31);
+    color: var(--text-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    display: none;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #333;
+        --text-color: #ddd;
+        --border-color: #fff;
+    }
+}
