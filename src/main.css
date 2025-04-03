@@ -91,11 +91,14 @@ pre {
     padding: 1rem;
     border-radius: 0.5rem;
     margin: 1rem auto auto;
-    width: 50vw;
+    width: fit-content;
+    max-width: 80%;
+    overflow: auto;
 }
 
 .outputLinks a {
     margin: 1rem;
+    padding: 0.5rem;
 }
 
 .invert {
@@ -117,5 +120,11 @@ pre {
         --bg-color: #333;
         --text-color: #ddd;
         --border-color: #fff;
+    }
+}
+
+@media (max-width: 600px) {
+    .outputLinks a{
+        display: block;
     }
 }
