@@ -9,14 +9,21 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 98vh;
+    user-select: none;
 }
 
-img {
-    height: 2rem;
-    width: 2rem;
+main {
+    flex: 1;
 }
 
-label, input{
+input, pre {
+    user-select: text;
+}
+
+label, input {
     display: block;
     margin: 1rem auto auto;
 }
@@ -31,24 +38,6 @@ input {
     border-radius: 0.5rem;
     outline: none;
     padding: 0.5rem;
-}
-
-.inpContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-#convertDiv {
-    margin: 2rem auto auto;
-    width: fit-content;
-}
-
-#convertRunner{
-    font-size: 1.3rem;
-    background-color: var(--text-color);
-    color: var(--bg-color);
 }
 
 button {
@@ -67,16 +56,61 @@ button {
     outline: none;
 }
 
-#errorDiv{
+button:hover {
+    background: var(--border-color);
+    color: var(--bg-color);
+}
+
+#errorDiv, #copyDiv {
     margin: 2rem auto auto;
     width: 75vw;
-    background-color: rgba(255, 0, 0, 0.31);
     color: var(--text-color);
     padding: 1rem;
     border-radius: 0.5rem;
     display: none;
 }
 
+#errorDiv {
+    background: rgba(255, 0, 0, 0.22);
+}
+
+#copyDiv {
+    background: rgba(0, 255, 0, 0.22);
+}
+
+a {
+    color: var(--text-color);
+}
+
+a:hover {
+    color: var(--border-color);
+}
+
+pre {
+    background: rgba(0, 0, 0, 0.22);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem auto auto;
+    width: 50vw;
+}
+
+.outputLinks a {
+    margin: 1rem;
+}
+
+.invert {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.invert:hover {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+#outputWrapper {
+    display: none;
+}
 
 @media (prefers-color-scheme: dark) {
     :root {

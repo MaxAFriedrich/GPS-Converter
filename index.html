@@ -10,25 +10,33 @@
     <link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
-<h1>GPS Converter</h1>
-<label for="wgs84Inp">WGS84 or Coordinate Reference System</label>
-<input id="wgs84Inp" placeholder="N 51° 53.947 W 000° 10.018">
-<div class="inpContainer" id="wgs84Div">
-    <button id="wgs84Clear">Clear</button>
-    <button id="wgs84Copy">Copy</button>
-    <button id="wgs84Paste">Paste</button>
-</div>
-<label for="osgbInp">OS Grid Reference</label>
-<input id="osgbInp" placeholder="ST 72533 88828">
-<div id="osgbDiv" class="inpContainer">
-    <button id="osgbClear">Clear</button>
-    <button id="osgbCopy">Copy</button>
-    <button id="osgbPaste">Paste</button>
-</div>
-<div id="convertDiv">
-    <button id="convertRunner">Convert</button>
-</div>
-<div id="errorDiv"></div>
+<header>
+    <h1>GPS Converter</h1>
+</header>
+<main>
+    <div id="inputWrapper">
+        <label for="input">Coordinates or Grid Reference</label>
+        <input id="input" placeholder="Enter coordinates or grid reference">
+        <button id="pasteButton">Paste</button>
+        <br>
+        <button id="convertButton" class="invert">Convert</button>
+    </div>
+    <div id="outputWrapper">
+        <pre id="output">Hello World</pre>
+        <button id="copyButton" class="invert">Copy</button>
+        <button id="resetButton">Reset</button>
+        <p>Open in:</p>
+        <div class="outputLinks" id="outputLinks"></div>
+    </div>
+    <div id="copyDiv">
+        <p id="copyText">Copied to clipboard</p>
+    </div>
+    <div id="errorDiv"></div>
+</main>
+<footer>
+    <a href="https://github.com/MaxAFriedrich/GPS-Converter">Github</a>
+</footer>
+
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
