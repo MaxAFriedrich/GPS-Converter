@@ -1,3 +1,7 @@
+import './main.css'
+import './geotools.js'
+import './geocoordsparser.js'
+
 document.addEventListener("DOMContentLoaded", function () {
     const wgs84InputElement = document.getElementById("wgs84Inp");
     const osgbInputElement = document.getElementById("osgbInp");
